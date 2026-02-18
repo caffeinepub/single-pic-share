@@ -1,0 +1,46 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-make-the-republish-re-deploy-operation-resilient-to-transient-network-build-failures-by-adding-a-retry-flow-that-can-re-attempt-the-same-deployment-without-any-functional-application-changes",
+      "featureTitle": "Make the republish/re-deploy operation resilient to transient network/build failures by adding a retry flow that can re-attempt the same deployment without any functional application changes.",
+      "files": [
+        "frontend/src/components/DeployRetryPanel.tsx",
+        "frontend/src/deployment/classifyFailure.ts",
+        "frontend/src/deployment/useRetryableOperation.ts",
+        "frontend/src/pages/FeaturedPhotoPage.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-improve-deployment-failure-reporting-so-that-the-error-surfaced-to-the-user-includes-actionable-human-readable-diagnostics-in-english-what-failed-at-which-step-build-vs-deploy-and-whether-retry-is-safe",
+      "featureTitle": "Improve deployment failure reporting so that the error surfaced to the user includes actionable, human-readable diagnostics in English (what failed, at which step: build vs deploy, and whether retry is safe).",
+      "files": [
+        "frontend/src/components/DeployRetryPanel.tsx",
+        "frontend/src/deployment/formatDeploymentError.ts",
+        "frontend/src/deployment/useRetryableOperation.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

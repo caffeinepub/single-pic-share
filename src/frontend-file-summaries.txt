@@ -1,0 +1,12 @@
+{
+  "frontend/src/App.tsx": "Main application component that wraps FeaturedPhotoPage with QueryClientProvider to enable React Query functionality throughout the app.",
+  "frontend/src/pages/FeaturedPhotoPage.tsx": "Full-viewport image display component that conditionally renders the DeployRetryPanel when ?deploy=true query parameter is present, otherwise shows the sunflowers birthday card image.",
+  "frontend/src/index.css": "Global styles with warm OKLCH color system and hardened layout rules ensuring html/body/#root occupy full viewport with no margins, padding, or overflow to prevent scrolling.",
+  "frontend/tailwind.config.js": "Tailwind configuration extended with custom border radii, soft shadows, and Inter font family to support the minimalist photo-sharing design.",
+  "frontend/index.html": "HTML entry point with updated title \"Bouquet Live Hosting\" and Open Graph/Twitter Card meta tags referencing the sunflowers image for social sharing previews.",
+  "frontend/src/hooks/useQueries.ts": "Contains React Query hooks including a test hook for deployment error handling that demonstrates backend integration with the handleError method.",
+  "frontend/src/deployment/classifyFailure.ts": "Analyzes deployment errors and classifies them into categories (build, deploy, network, parsing, unknown) with a determination of whether retry is safe.",
+  "frontend/src/deployment/formatDeploymentError.ts": "Converts classified deployment failures into human-readable error messages with clear titles, descriptions, action messages, and technical details.",
+  "frontend/src/deployment/useRetryableOperation.ts": "React hook that wraps async operations with retry support, state management (idle/running/succeeded/failed), and automatic error classification and formatting.",
+  "frontend/src/components/DeployRetryPanel.tsx": "UI component that provides deployment testing controls with retry functionality, displays formatted error messages with technical details, and shows success/failure states using shadcn/ui components."
+}

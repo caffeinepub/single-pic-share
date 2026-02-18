@@ -1,0 +1,70 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-18T05:24:51.762Z",
+  "summary": "The diff adds a new retryable-operation hook plus failure classification/formatting and a new UI panel (shown via ?deploy=true) to demonstrate retry/error reporting. However, it does not clearly integrate retry into the real republish/re-deploy flow; instead it uses a simulated deployment call to backend.handleError. Error reporting is improved in the new panel and backend trap messages, but it’s not evident these messages are what users see during actual deployment failures.",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Make the republish/re-deploy operation resilient to transient network/build failures by adding a retry flow that can re-attempt the same deployment without any functional application changes.",
+      "reason": "The added retry logic is wrapped around a simulated operation that calls actor.handleError with a hardcoded test error, and the UI is a separate test panel behind a query parameter; the diff does not show the retry mechanism being wired into the actual republish/re-deploy operation.",
+      "evidence": [
+        "frontend/src/components/DeployRetryPanel.tsx (\"Simulated deployment operation\"; hardcoded \"network timeout: no response from subnet\")",
+        "frontend/src/pages/FeaturedPhotoPage.tsx (panel only shown when ?deploy=true)"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "requirement": "Improve deployment failure reporting so that the error surfaced to the user includes actionable, human-readable diagnostics in English (what failed, at which step: build vs deploy, and whether retry is safe).",
+      "reason": "Although classification/formatting and a display panel are added, the diff does not show these improved messages being surfaced in the existing/real deployment UI/flow; they appear limited to the new DeployRetryPanel test route and backend trap strings.",
+      "evidence": [
+        "frontend/src/components/DeployRetryPanel.tsx (new, conditional UI for formatted errors)",
+        "frontend/src/pages/FeaturedPhotoPage.tsx (gates panel behind ?deploy=true)"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Added a new 'Deployment Control Panel' UI and query-parameter gated route (?deploy=true) to test deployment retry/error classification.",
+      "reason": "BuildRequest asks to fix republish/re-deploy reliability and error reporting in the deployment flow, not to introduce a new test panel or hidden route.",
+      "evidence": [
+        "frontend/src/components/DeployRetryPanel.tsx",
+        "frontend/src/pages/FeaturedPhotoPage.tsx"
+      ]
+    },
+    {
+      "description": "Added a backend handleError method that traps with categorized, user-directed messages (including instruction to report to '#support of ISAAC').",
+      "reason": "Backend changes were allowed only if strictly required for retry/reporting, but the diff shows a new/expanded trap-based error categorization endpoint used by the simulated UI rather than clear integration with real deployment failures; the '#support of ISAAC' instruction is also not requested.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Introduced a React Query configuration change (global QueryClientProvider and queries.retry=1).",
+      "reason": "The BuildRequest focuses on deployment retry/reporting; adding React Query global configuration is not mentioned as part of the requested deployment retry flow.",
+      "evidence": [
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "description": "Added a test query hook useTestDeploymentError that calls actor.handleError.",
+      "reason": "The BuildRequest does not request adding test/demo query hooks; it requests improving the actual deployment retry/error reporting behavior.",
+      "evidence": [
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    }
+  ],
+  "confidence": 0.74,
+  "changed_files": [
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/src/App.tsx",
+    "frontend/src/components/DeployRetryPanel.tsx",
+    "frontend/src/deployment/classifyFailure.ts",
+    "frontend/src/deployment/formatDeploymentError.ts",
+    "frontend/src/deployment/useRetryableOperation.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/pages/FeaturedPhotoPage.tsx",
+    "project_state.json"
+  ]
+}

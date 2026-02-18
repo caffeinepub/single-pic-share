@@ -1,0 +1,58 @@
+{
+  "kind": "build_request",
+  "title": "Fix deployment retry and republish reliability",
+  "projectName": "Bouquet Live Hosting",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Make the republish/re-deploy operation resilient to transient network/build failures by adding a retry flow that can re-attempt the same deployment without any functional application changes.",
+      "target": "unknown",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Try again"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When a deployment attempt fails with a network-related error, the system can re-attempt deployment without requiring code changes.",
+        "At least one retry is performed (or the user is offered an explicit retry control) and failure/success is clearly reported in English.",
+        "A repeated attempt does not alter application behavior or data models (no functional changes)."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Improve deployment failure reporting so that the error surfaced to the user includes actionable, human-readable diagnostics in English (what failed, at which step: build vs deploy, and whether retry is safe).",
+      "target": "unknown",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Try again"
+        ]
+      },
+      "acceptanceCriteria": [
+        "On deployment failure, the displayed error message distinguishes build failures from network/deploy failures.",
+        "The message includes a clear next action in English (e.g., retry) and confirms it will not change app functionality."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify files under frontend/src/components/ui (read-only).",
+    "Do not edit frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, or frontend/src/main.tsx (immutable paths).",
+    "Backend must remain a single Motoko actor in backend/main.mo; only add backend changes if strictly required for retry/reporting.",
+    "Do not introduce external databases, third-party auth providers, WebSockets, or external deployment services."
+  ],
+  "nonGoals": [
+    "Adding new end-user product features unrelated to deployment/redeploy.",
+    "Changing the app’s visual design, content, or behavior beyond what is necessary to support retry/error reporting.",
+    "Implementing real-time status updates via WebSockets or push notifications."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

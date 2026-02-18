@@ -1,0 +1,63 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Bouquet Live Hosting — Resilient deploy retry + actionable failure reporting (frontend-only)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Add a retry flow for republish/re-deploy so transient failures can be re-attempted safely without any functional application changes.",
+      "acceptanceCriteria": [
+        "When a deployment attempt fails with a network-related error, the system can re-attempt deployment without requiring code changes.",
+        "At least one retry is performed (or the user is offered an explicit retry control) and failure/success is clearly reported in English.",
+        "A repeated attempt does not alter application behavior or data models (no functional changes)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/deployment/useRetryableOperation.ts",
+          "operation": "create",
+          "description": "Create a reusable React hook that wraps an async republish/re-deploy action with retry support (at least one retry), preserves the same inputs between attempts, and exposes state (idle/running/succeeded/failed), last error, and a retry() function."
+        },
+        {
+          "path": "frontend/src/deployment/classifyFailure.ts",
+          "operation": "create",
+          "description": "Add frontend-only error classification helpers to detect likely transient network/deploy failures vs build failures based on thrown error strings/status-like hints; return a classification and whether retry is considered safe."
+        },
+        {
+          "path": "frontend/src/components/DeployRetryPanel.tsx",
+          "operation": "create",
+          "description": "Create a small, opt-in UI panel that triggers the republish/re-deploy action and, on failure, offers an explicit Retry control that re-attempts the same action without any app/data/model changes. Use shadcn-ui components (e.g., Button/Alert/Dialog if present) for consistent UI; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/FeaturedPhotoPage.tsx",
+          "operation": "modify",
+          "description": "Wire the DeployRetryPanel into the existing page in a minimally invasive, opt-in way (e.g., only render when a specific query param is present) so normal app behavior remains unchanged while still enabling retry testing and use when needed."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Improve deployment failure reporting with actionable, human-readable diagnostics (build vs deploy/network, and whether retry is safe).",
+      "acceptanceCriteria": [
+        "On deployment failure, the displayed error message distinguishes build failures from network/deploy failures.",
+        "The message includes a clear next action in English (e.g., retry) and confirms it will not change app functionality."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/deployment/formatDeploymentError.ts",
+          "operation": "create",
+          "description": "Create a formatter that turns the classified failure into an English, human-readable message including: what likely failed, whether it was during build vs deploy/network, whether retry is safe, and a suggested next action (retry)."
+        },
+        {
+          "path": "frontend/src/components/DeployRetryPanel.tsx",
+          "operation": "modify",
+          "description": "Update the panel to surface the formatted diagnostics in English on failure, clearly labeling build vs deploy/network failures and explicitly stating that retrying will not change application functionality. Use shadcn-ui presentation components as appropriate; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/deployment/useRetryableOperation.ts",
+          "operation": "modify",
+          "description": "Integrate classification + formatting into the retry hook outputs so UI can consistently show step-specific diagnostics and safe-to-retry guidance (without changing application behavior/data models)."
+        }
+      ]
+    }
+  ]
+}

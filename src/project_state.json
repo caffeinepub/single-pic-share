@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "New project",
+  "architectural_notes": [],
+  "known_issues": [
+    "Network deployment/build process is failing (deployment failed error)."
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-make-the-republish-re-deploy-operation-resilient-to-transient-network-build-failures-by-adding-a-retry-flow-that-can-re-attempt-the-same-deployment-without-any-functional-application-changes",
+      "title": "Make the republish/re-deploy operation resilient to transient network/build failures by adding a retry flow that can re-attempt the same deployment without any functional application changes.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-improve-deployment-failure-reporting-so-that-the-error-surfaced-to-the-user-includes-actionable-human-readable-diagnostics-in-english-what-failed-at-which-step-build-vs-deploy-and-whether-retry-is-safe",
+      "title": "Improve deployment failure reporting so that the error surfaced to the user includes actionable, human-readable diagnostics in English (what failed, at which step: build vs deploy, and whether retry is safe).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [],
+  "projectName": "Bouquet Live Hosting",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
